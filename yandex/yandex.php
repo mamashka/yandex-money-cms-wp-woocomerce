@@ -105,7 +105,7 @@ function woocommerce_YM_payu_init(){
         $txnid = $order_id;
 	//	update_post_meta(12345,'test_key',$order);
        $result ='';
-		$result .= '<form name=ShopForm method="POST" id="submit_Yandex_Money_payment_form" action="https://money.yandex.ru/eshop.xml">';
+		$result .= '<form name=ShopForm method="POST" id="submit_Yandex_Money_payment_form" action="https://money.yandex.ru/eshop.xml">'; //if you want demomode use https://demomoney.yandex.ru/eshop.xml
 			$result .= '<input type="hidden" name="firstname" value="'.$order -> billing_first_name.'">';
 			$result .= '<input type="hidden" name="lastname" value="'.$order -> billing_last_name.'">';
 			$result .= '<input type="hidden" name="scid" value="'.$this->scid.'">';
