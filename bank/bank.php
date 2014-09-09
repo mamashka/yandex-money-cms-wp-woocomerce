@@ -27,7 +27,7 @@ function woocommerce_bank_payu_init(){
       $this -> description = $this -> settings['description'];
       $this -> scid = $this -> settings['scid'];
       $this -> ShopID = $this -> settings['ShopID'];
-      $this -> liveurl = '';
+      $this -> demomode = $this -> settings['demomode'];
  
       $this -> msg['message'] = "";
       $this -> msg['class'] = "";
@@ -47,6 +47,11 @@ function woocommerce_bank_payu_init(){
 			'title' => __('Включить/Выключить','yandex_money'),
 			'type' => 'checkbox',
 			'label' => __('Включить модуль оплаты Яндекс.Банк','yandex_money'),
+			'default' => 'no'),
+		'demomode' => array (
+			'title' => __('Включить/Выключить','yandex_money'),
+			'type' => 'checkbox',
+			'label' => __('Включить тестовый режим','yandex_money'),
 			'default' => 'no'),
 		'title' => array(
 			'title' => __('Заголовок','yandex_money'),
@@ -99,11 +104,18 @@ function woocommerce_bank_payu_init(){
     public function generate_payu_form($order_id){
  
         global $woocommerce;
+
+	if($this->demomode == "yes") {
+	  $yahost = "https://demomoney.yandex.ru/eshop.xml";
+	}	
+	else {
+	  $yahost = "https://money.yandex.ru/eshop.xml";
+	}
  
         $order = new WC_Order($order_id);
         $txnid = $order_id;
 	    $result ='';
-		$result .= '<form name=ShopForm method="POST" id="submit_bank_payment_form" action="https://money.yandex.ru/eshop.xml">'; //if you want demomode use https://demomoney.yandex.ru/eshop.xml
+		$result .= '<form name=ShopForm method="POST" id="submit_bank_payment_form" action="'.$yahost.'">'; 
 			$result .= '<input type="hidden" name="firstname" value="'.$order -> billing_first_name.'">';
 			$result .= '<input type="hidden" name="lastname" value="'.$order -> billing_last_name.'">';
 			$result .= '<input type="hidden" name="scid" value="'.$this->scid.'">';

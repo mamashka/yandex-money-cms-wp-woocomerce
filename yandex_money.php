@@ -92,7 +92,7 @@ function YMcheckPayment()
 					$order_w->update_status('processing', __( 'Awaiting BACS payment', 'woocommerce' ));
 					$order_w->reduce_order_stock();
 					
-					$code = 1000;
+					$code = 0;
 					header('Content-Type: application/xml');
 					include('payment_xml.php');
 					die();
