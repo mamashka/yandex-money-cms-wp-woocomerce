@@ -1,4 +1,4 @@
-<?php	
+<?	
 	function yandex_webmoney_gateway_icon( $gateways ) {
 		if ( isset( $gateways['yandex_webmoney'] ) ) {
 			$url=WP_PLUGIN_URL."/".dirname( plugin_basename( __FILE__ ) );
@@ -57,15 +57,7 @@ function woocommerce_yandex_webmoney_payu_init(){
 			'title' => __('Описание','yandex_money'),
 			'type' => 'textarea',
 			'description' => __('Описание, которое пользователь видит во время оплаты','yandex_money'),
-			'default' => __('Оплата через систему Яндекс.Webmoney','yandex_money')),
-		'scid' => array(
-			'title' => 'Scid',
-			'type' => 'text',
-			'description' => __('Номер витрины магазина ЦПП','yandex_money')),
-		'ShopID' => array(
-			'title' => 'ShopID',
-			'type' => 'text',
-			'description' => __('Номер магазина ЦПП','yandex_money') )
+			'default' => __('Оплата через систему Яндекс.Webmoney','yandex_money'))
 		);
     }
  
@@ -105,8 +97,8 @@ function woocommerce_yandex_webmoney_payu_init(){
 		$result .= '<form name=ShopForm method="POST" id="submit_webmoney_payment_form" action="https://money.yandex.ru/eshop.xml">';
 			$result .= '<input type="hidden" name="firstname" value="'.$order -> billing_first_name.'">';
 			$result .= '<input type="hidden" name="lastname" value="'.$order -> billing_last_name.'">';
-			$result .= '<input type="hidden" name="scid" value="'.$this->scid.'">';
-			$result .= '<input type="hidden" name="ShopID" value="'.$this->ShopID.'"> ';
+			$result .= '<input type="hidden" name="scid" value="'.get_option('ym_Scid').'">';
+			$result .= '<input type="hidden" name="ShopID" value="'.get_option('ym_ShopID').'"> ';
 			$result .= '<input type=hidden name="CustomerNumber" value="'.$txnid.'" size="43">';
 			$result .= '<input type=hidden name="Sum" value="'.$order->order_total.'" size="43">'; 
 			$result .= '<input type=hidden name="CustName" value="'.$order->billing_first_name.' '.$order->billing_last_name.'" size="43">';

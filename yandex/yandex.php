@@ -1,4 +1,4 @@
-<?php	
+<?	
 	function YM_gateway_icon( $gateways ) {
 		if ( isset( $gateways['yandex_money'] ) ) {
 			$url=WP_PLUGIN_URL."/".dirname( plugin_basename( __FILE__ ) );
@@ -27,7 +27,7 @@ function woocommerce_YM_payu_init(){
       $this -> description = $this -> settings['description'];
       $this -> scid = $this -> settings['scid'];
       $this -> ShopID = $this -> settings['ShopID'];
-      $this -> demomode = $this -> settings['demomode'];
+      $this -> liveurl = '';
  
       $this -> msg['message'] = "";
       $this -> msg['class'] = "";
@@ -48,11 +48,6 @@ function woocommerce_YM_payu_init(){
                     'type' => 'checkbox',
                     'label' => __('Включить модуль оплаты Яндекс.Деньги','yandex_money'),
                     'default' => 'no'),
-		'demomode' => array (
-                        'title' => __('Включить/Выключить','yandex_money'),
-                        'type' => 'checkbox',
-                        'label' => __('Включить тестовый режим','yandex_money'),
-                        'default' => 'no'),
                 'title' => array(
                     'title' => __('Заголовок','yandex_money'),
                     'type'=> 'text',
@@ -62,15 +57,7 @@ function woocommerce_YM_payu_init(){
                     'title' => __('Описание','yandex_money'),
                     'type' => 'textarea',
                     'description' => __('Описание, которое пользователь видит во время оплаты','yandex_money'),
-                    'default' => __('Оплата через систему Яндекс.Деньги','yandex_money')),
-                'scid' => array(
-                    'title' => 'Scid',
-                    'type' => 'text',
-                    'description' => __('Номер витрины магазина ЦПП','yandex_money')),
-                'ShopID' => array(
-                    'title' => 'ShopID',
-                    'type' => 'text',
-                    'description' => __('Номер магазина ЦПП','yandex_money') )
+                    'default' => __('Оплата через систему Яндекс.Деньги','yandex_money'))
             );
     }
  
@@ -105,29 +92,21 @@ function woocommerce_YM_payu_init(){
     public function generate_payu_form($order_id){
  
         global $woocommerce;
-
-	if($this->demomode == "yes") {
-          $yahost = "https://demomoney.yandex.ru/eshop.xml";
-        }
-        else {
-          $yahost = "https://money.yandex.ru/eshop.xml";
-        }
  
         $order = new WC_Order($order_id);
         $txnid = $order_id;
 	//	update_post_meta(12345,'test_key',$order);
        $result ='';
-		$result .= '<form name=ShopForm method="POST" id="submit_Yandex_Money_payment_form" action="'.$yahost.'">'; 
+		$result .= '<form name=ShopForm method="POST" id="submit_Yandex_Money_payment_form" action="https://money.yandex.ru/eshop.xml">';
 			$result .= '<input type="hidden" name="firstname" value="'.$order -> billing_first_name.'">';
 			$result .= '<input type="hidden" name="lastname" value="'.$order -> billing_last_name.'">';
-			$result .= '<input type="hidden" name="scid" value="'.$this->scid.'">';
-			$result .= '<input type="hidden" name="ShopID" value="'.$this->ShopID.'"> ';
+			$result .= '<input type="hidden" name="scid" value="'.get_option('ym_Scid').'">';
+			$result .= '<input type="hidden" name="ShopID" value="'.get_option('ym_ShopID').'"> ';
 			$result .= '<input type=hidden name="CustomerNumber" value="'.$txnid.'" size="43">';
 			$result .= '<input type=hidden name="Sum" value="'.$order->order_total.'" size="43">'; 
 			$result .= '<input type=hidden name="CustName" value="'.$order->billing_first_name.' '.$order->billing_last_name.'" size="43">';
 			$result .= '<input type=hidden name="CustAddr" value="'.$order->billing_city.', '.$order->billing_address_1.'" size="43">';
-      $result .= '<input type=hidden name="CustEMail" value="'.$order->billing_email.'" size="43">'; 
-      $result .= '<input type=hidden name="cms_name" value="wordpress_woocommerce" size="43">'; 
+			$result .= '<input type=hidden name="CustEMail" value="'.$order->billing_email.'" size="43">'; 
 			$result .= '<textarea style="display:none" rows="10" name="OrderDetails"  cols="34">'.$order->customer_note.'</textarea>';
 			$result .= '<input name="paymentType" value="" type="hidden">';
 			$result .= '<input type=submit value="Оплатить">';
