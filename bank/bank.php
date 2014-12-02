@@ -1,4 +1,4 @@
-<?	
+<?php
 	function bank_gateway_icon( $gateways ) {
 		if ( isset( $gateways['bank'] ) ) {
 			$url=WP_PLUGIN_URL."/".dirname( plugin_basename( __FILE__ ) );

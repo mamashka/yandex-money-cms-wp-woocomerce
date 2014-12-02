@@ -1,4 +1,4 @@
-<?	
+<?php
 	function yandex_webmoney_gateway_icon( $gateways ) {
 		if ( isset( $gateways['yandex_webmoney'] ) ) {
 			$url=WP_PLUGIN_URL."/".dirname( plugin_basename( __FILE__ ) );

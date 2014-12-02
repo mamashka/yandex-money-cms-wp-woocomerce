@@ -1,4 +1,4 @@
-<?	
+<?php
 	function YM_gateway_icon( $gateways ) {
 		if ( isset( $gateways['yandex_money'] ) ) {
 			$url=WP_PLUGIN_URL."/".dirname( plugin_basename( __FILE__ ) );
@@ -95,9 +95,10 @@ function woocommerce_YM_payu_init(){
  
         $order = new WC_Order($order_id);
         $txnid = $order_id;
+		$sendurl=get_option('ym_Demo')=='on'?'https://demomoney.yandex.ru/eshop.xml':'https://money.yandex.ru/eshop.xml';
 	//	update_post_meta(12345,'test_key',$order);
        $result ='';
-		$result .= '<form name=ShopForm method="POST" id="submit_Yandex_Money_payment_form" action="https://money.yandex.ru/eshop.xml">';
+		$result .= '<form name=ShopForm method="POST" id="submit_Yandex_Money_payment_form" action="'.$sendurl.'">';
 			$result .= '<input type="hidden" name="firstname" value="'.$order -> billing_first_name.'">';
 			$result .= '<input type="hidden" name="lastname" value="'.$order -> billing_last_name.'">';
 			$result .= '<input type="hidden" name="scid" value="'.get_option('ym_Scid').'">';

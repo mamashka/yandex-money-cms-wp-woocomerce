@@ -63,9 +63,13 @@ function yandexMoney_submenu_page_callback() {
 <tr valign="top">
 <th scope="row">paymentAvisoUrl and checkUrl<br/><span style="line-height: 1;font-weight: normal;font-style: italic;font-size: 12px;">Генерируются автоматически для Вашего сайта<span></th>
 <td><code><?php
-$url = str_replace("wp-admin/admin.php", "", $_SERVER['SCRIPT_URI']);
- echo $url. '?yandex_money=check'; 
+ echo 'https://'.$_SERVER['HTTP_HOST']. '/?yandex_money=check'; 
  ?></code></td>
+</tr>
+
+<tr valign="top">
+<th scope="row">Демо режим<br/><span style="line-height: 1;font-weight: normal;font-style: italic;font-size: 12px;">Включить демо режим для тестирования<span></th>
+<td><input type="checkbox" name="ym_Demo" <?php echo get_option('ym_Demo')=='on'?'checked="checked"':''; ?>" /></td>
 </tr>
 
 <tr valign="top">
@@ -86,7 +90,7 @@ $url = str_replace("wp-admin/admin.php", "", $_SERVER['SCRIPT_URI']);
 </table>
 
 <input type="hidden" name="action" value="update" />
-<input type="hidden" name="page_options" value="ym_Scid,ym_ShopID,ym_shopPassword" />
+<input type="hidden" name="page_options" value="ym_Scid,ym_ShopID,ym_shopPassword,ym_Demo" />
 
 <p class="submit">
 <input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />

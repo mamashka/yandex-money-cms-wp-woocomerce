@@ -1,4 +1,4 @@
-<?	
+<?php
 	function terminal_gateway_icon( $gateways ) {
 		if ( isset( $gateways['terminal'] ) ) {
 			$url=WP_PLUGIN_URL."/".dirname( plugin_basename( __FILE__ ) );
