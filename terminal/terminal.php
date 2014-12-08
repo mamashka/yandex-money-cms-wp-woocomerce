@@ -94,8 +94,9 @@ function woocommerce_terminal_payu_init(){
  
         $order = new WC_Order($order_id);
         $txnid = $order_id;
+		$sendurl=get_option('ym_Demo')=='on'?'https://demomoney.yandex.ru/eshop.xml':'https://money.yandex.ru/eshop.xml';
 	    $result ='';
-		$result .= '<form name=ShopForm method="POST" id="submit_terminal_payment_form" action="https://money.yandex.ru/eshop.xml">';
+		$result .= '<form name=ShopForm method="POST" id="submit_terminal_payment_form" action="'.$sendurl.'">';
 			$result .= '<input type="hidden" name="firstname" value="'.$order -> billing_first_name.'">';
 			$result .= '<input type="hidden" name="lastname" value="'.$order -> billing_last_name.'">';
 			$result .= '<input type="hidden" name="scid" value="'.get_option('ym_Scid').'">';
