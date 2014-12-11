@@ -108,7 +108,7 @@ function woocommerce_yandex_alfabank_payu_init(){
 			$result .= '<input type="hidden" name="scid" value="'.$this->scid.'">';
 			$result .= '<input type="hidden" name="ShopID" value="'.$this->ShopID.'"> ';
 			$result .= '<input type=hidden name="CustomerNumber" value="'.$txnid.'" size="43">';
-			$result .= '<input type=hidden name="Sum" value="'.$order->order_total.'" size="43">'; 
+			$result .= '<input type=hidden name="Sum" value="'.number_format( $order->order_total, 2, '.', '' ).'" size="43">'; 
 			$result .= '<textarea style="display:none" rows="10" name="OrderDetails"  cols="34">'.$order->customer_note.'</textarea>';
 			$result .= '<input name="paymentType" value="AB" type="hidden">';
 			$result .= '<input type=submit value="Оплатить">';

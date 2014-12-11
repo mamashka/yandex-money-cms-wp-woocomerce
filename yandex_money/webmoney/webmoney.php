@@ -101,7 +101,7 @@ function woocommerce_yandex_webmoney_payu_init(){
 			$result .= '<input type="hidden" name="scid" value="'.get_option('ym_Scid').'">';
 			$result .= '<input type="hidden" name="ShopID" value="'.get_option('ym_ShopID').'"> ';
 			$result .= '<input type=hidden name="CustomerNumber" value="'.$txnid.'" size="43">';
-			$result .= '<input type=hidden name="Sum" value="'.$order->order_total.'" size="43">'; 
+			$result .= '<input type=hidden name="Sum" value="'.number_format( $order->order_total, 2, '.', '' ).'" size="43">'; 
 			$result .= '<input type=hidden name="CustName" value="'.$order->billing_first_name.' '.$order->billing_last_name.'" size="43">';
 			$result .= '<input type=hidden name="CustAddr" value="'.$order->billing_city.', '.$order->billing_address_1.'" size="43">';
 			$result .= '<input type=hidden name="CustEMail" value="'.$order->billing_email.'" size="43">'; 
