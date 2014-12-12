@@ -1,12 +1,4 @@
 <?php
-/*
-Plugin Name: Yandex.Money for woocomerce
-Plugin URI: http://casepress.org
-Version: 1.0.0
-Author: http://casepress.org
-Author URI: http://casepress.org
-Description: 
-*/
 	
 include_once 'yandex/yandex.php';
 include_once 'bank/bank.php';
@@ -100,14 +92,6 @@ function yandexMoney_submenu_page_callback() {
 </div>
 <?php
 }
-
-
-
-
-
-
-
-
 
 add_action('parse_request', 'YMcheckPayment');
 
