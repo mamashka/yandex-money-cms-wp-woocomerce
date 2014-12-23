@@ -1,5 +1,11 @@
 <?php
-	
+
+/**
+ * Plugin Name: yandexmoney_wp_woocommerce
+ * Plugin URI: https://github.com/aTastyCookie/yandexmoney_wp_woocommerce
+ * Description: Yandex.Kassa
+ */
+
 include_once 'yandex/yandex.php';
 include_once 'bank/bank.php';
 include_once 'terminal/terminal.php';
