@@ -13,5 +13,10 @@ http://example.com/?yandex_money=check
 
 ==========================
 
+Нашли ошибку или у вас есть предложение по улучшению модуля?
+Пишите нам cms@yamoney.ru
+
+==========================
+
 Плагин <b>WooCommerce</b> можно скачать <a href="http://wordpress.org/plugins/woocommerce/" target="blank_">отсюда</a>.
 
