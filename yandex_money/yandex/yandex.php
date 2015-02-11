@@ -64,7 +64,7 @@ function woocommerce_YM_payu_init(){
        public function admin_options(){
         echo '<h3>'.__('Оплата Яндекс.Деньги','yandex_money').'</h3>';
 		echo '<h5>'.__('Для подключения системы Яндекс.Деньги нужно одобрить заявку на подключение ','yandex_money');
-		echo '<a href="https://money.yandex.ru/shoprequest/">https://money.yandex.ru/shoprequest</a>';
+		echo '<a href="https://money.yandex.ru/joinups/">https://money.yandex.ru/joinups</a>';
 		echo __(' После этого Вы получите и ShopID, и Scid','yandex_money').'</h5>';
         echo '<table class="form-table">';
         // Generate the HTML For the settings form.

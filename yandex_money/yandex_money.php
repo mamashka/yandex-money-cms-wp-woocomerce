@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: yandexmoney_wp_woocommerce
- * Plugin URI: https://github.com/aTastyCookie/yandexmoney_wp_woocommerce
+ * Plugin URI: https://github.com/yandex-money/yandex-money-cms-wp-woocomerce
  * Description: Yandex.Kassa
  */
 

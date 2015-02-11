@@ -17,7 +17,7 @@ function woocommerce_bank_payu_init(){
   class WC_bank_Payu extends WC_Payment_Gateway{
     public function __construct(){
       $this -> id = 'bank';
-      $this -> method_title = 'Яндекс.Банк';
+      $this -> method_title = 'Банковские карты (через Яндекс.Деньги)';
       $this -> has_fields = false;
  
       $this -> init_form_fields();
@@ -46,25 +46,25 @@ function woocommerce_bank_payu_init(){
 		'enabled' => array(
 			'title' => __('Включить/Выключить','yandex_money'),
 			'type' => 'checkbox',
-			'label' => __('Включить модуль оплаты Яндекс.Банк','yandex_money'),
+			'label' => __('Включить модуль оплаты Банковские карты (через Яндекс.Деньги)','yandex_money'),
 			'default' => 'no'),
 		'title' => array(
 			'title' => __('Заголовок','yandex_money'),
 			'type'=> 'text',
 			'description' => __('Название, которое пользователь видит во время оплаты','yandex_money'),
-			'default' => __('Яндекс.Банк','yandex_money')),
+			'default' => __('Банковские карты','yandex_money')),
 		'description' => array(
 			'title' => __('Описание','yandex_money'),
 			'type' => 'textarea',
 			'description' => __('Описание, которое пользователь видит во время оплаты','yandex_money'),
-			'default' => __('Оплата через систему Яндекс.Банк','yandex_money'))
+			'default' => __('Оплата банковской картой','yandex_money'))
 		);
 		
     }
  
        public function admin_options(){
-		echo '<h3>'.__('Оплата Яндекс.Банк','yandex_money').'</h3>';
-		echo '<h5>'.__('Для подключения системы Яндекс.Банк нужно одобрить заявку на подключение https://money.yandex.ru/shoprequest/ , после этого Вы получите и ShopID, и Scid','yandex_money').'</h5>';
+		echo '<h3>'.__('Оплата банковскими картами (через Яндекс.Деньги)','yandex_money').'</h3>';
+		echo '<h5>'.__('Для подключения модуля оплаты банковскими картами (через Яндекс.Деньги) нужно одобрить заявку на подключение https://money.yandex.ru/joinups/ , после этого Вы получите и ShopID, и Scid','yandex_money').'</h5>';
         echo '<table class="form-table">';
         // Generate the HTML For the settings form.
         $this -> generate_settings_html();
@@ -187,8 +187,3 @@ function woocommerce_bank_payu_init(){
  
     add_filter('woocommerce_payment_gateways', 'woocommerce_add_bank_payu_gateway' );
 }
-
-
-
-
-

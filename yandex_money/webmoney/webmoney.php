@@ -17,7 +17,7 @@ function woocommerce_yandex_webmoney_payu_init(){
   class WC_yandex_webmoney_Payu extends WC_Payment_Gateway{
     public function __construct(){
       $this -> id = 'yandex_webmoney';
-      $this -> method_title = 'Яндекс.Webmoney';
+      $this -> method_title = 'Webmoney (через Яндекс.Деньги)';
       $this -> has_fields = false;
  
       $this -> init_form_fields();
@@ -46,24 +46,24 @@ function woocommerce_yandex_webmoney_payu_init(){
 		'enabled' => array(
 			'title' => __('Включить/Выключить','yandex_money'),
 			'type' => 'checkbox',
-			'label' => __('Включить модуль оплаты Яндекс.Webmoney','yandex_money'),
+			'label' => __('Включить модуль оплаты Webmoney (через Яндекс.Деньги)','yandex_money'),
 			'default' => 'no'),
 		'title' => array(
 			'title' => __('Заголовок','yandex_money'),
 			'type'=> 'text',
 			'description' => __('Название, которое пользователь видит во время оплаты','yandex_money'),
-			'default' => __('Яндекс.Webmoney','yandex_money')),
+			'default' => __('Webmoney','yandex_money')),
 		'description' => array(
 			'title' => __('Описание','yandex_money'),
 			'type' => 'textarea',
 			'description' => __('Описание, которое пользователь видит во время оплаты','yandex_money'),
-			'default' => __('Оплата через систему Яндекс.Webmoney','yandex_money'))
+			'default' => __('Оплата через систему Webmoney','yandex_money'))
 		);
     }
  
        public function admin_options(){
-         echo '<h3>'.__('Оплата Яндекс.Webmoney','yandex_money').'</h3>';
-		echo '<h5>'.__('Для подключения системы Яндекс.Webmoney нужно одобрить заявку на подключение https://money.yandex.ru/shoprequest/ , после этого Вы получите и ShopID, и Scid','yandex_money').'</h5>';
+         echo '<h3>'.__('Оплата Webmoney (через Яндекс.Деньги)','yandex_money').'</h3>';
+		echo '<h5>'.__('Для подключения модуля оплаты Webmoney (через Яндекс.Деньги) нужно одобрить заявку на подключение https://money.yandex.ru/joinups/ , после этого Вы получите и ShopID, и Scid','yandex_money').'</h5>';
         echo '<table class="form-table">';
         // Generate the HTML For the settings form.
         $this -> generate_settings_html();
