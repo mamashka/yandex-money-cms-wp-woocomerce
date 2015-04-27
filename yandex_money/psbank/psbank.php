@@ -1,23 +1,23 @@
 <?php
-	function YM_gateway_icon( $gateways ) {
-		if ( isset( $gateways['yandex_money'] ) ) {
+	function psbank_gateway_icon( $gateways ) {
+		if ( isset( $gateways['psbank'] ) ) {
 			$url=WP_PLUGIN_URL."/".dirname( plugin_basename( __FILE__ ) );
-			$gateways['yandex_money']->icon = $url . '/pc.png';
+			$gateways['psbank']->icon = $url . '/pb.png';
 		}
 	 
 		return $gateways;
 	}
 	 
-	add_filter( 'woocommerce_available_payment_gateways', 'YM_gateway_icon' );
+	add_filter( 'woocommerce_available_payment_gateways', 'psbank_gateway_icon' );
 
-add_action('plugins_loaded', 'woocommerce_YM_payu_init', 0);
-function woocommerce_YM_payu_init(){
+add_action('plugins_loaded', 'woocommerce_psbank_payu_init', 0);
+function woocommerce_psbank_payu_init(){
   if(!class_exists('WC_Payment_Gateway')) return;
  
-  class WC_YM_Payu extends WC_Payment_Gateway{
+  class WC_psbank_Payu extends WC_Payment_Gateway{
     public function __construct(){
-      $this -> id = 'yandex_money';
-      $this -> method_title  = 'Кошелек Яндекс.Деньги';
+      $this -> id = 'psbank';
+      $this -> method_title = 'Интернет-банк Промсвязьбанка';
       $this -> has_fields = false;
  
       $this -> init_form_fields();
@@ -38,31 +38,32 @@ function woocommerce_YM_payu_init(){
              } else {
                 add_action( 'woocommerce_update_options_payment_gateways', array( &$this, 'process_admin_options' ) );
             }
-      add_action('woocommerce_receipt_yandex_money', array(&$this, 'receipt_page'));
+      add_action('woocommerce_receipt_psbank', array(&$this, 'receipt_page'));
    }
     function init_form_fields(){
  
-       $this -> form_fields = array(
-                'enabled' => array(
-                    'title' => __('Включить/Выключить','yandex_money'),
-                    'type' => 'checkbox',
-                    'label' => __('Включить оплату из кошелека в Яндекс.Деньгах','yandex_money'),
-                    'default' => 'no'),
-                'title' => array(
-                    'title' => __('Заголовок','yandex_money'),
-                    'type'=> 'text',
-                    'description' => __('Название, которое пользователь видит во время оплаты','yandex_money'),
-                    'default' => __('Кошелек Яндекс.Деньги','yandex_money')),
-                'description' => array(
-                    'title' => __('Описание','yandex_money'),
-                    'type' => 'textarea',
-                    'description' => __('Описание, которое пользователь видит во время оплаты','yandex_money'),
-                    'default' => __('Оплата из кошелька в Яндекс.Деньгах','yandex_money'))
-            );
+   	 $this -> form_fields = array(
+		'enabled' => array(
+			'title' => __('Включить/Выключить','yandex_money'),
+			'type' => 'checkbox',
+			'label' => __('Включить оплату через интернет-банк Промсвязьбанка','yandex_money'),
+			'default' => 'no'),
+		'title' => array(
+			'title' => __('Заголовок','yandex_money'),
+			'type'=> 'text',
+			'description' => __('Название, которое пользователь видит во время оплаты','yandex_money'),
+			'default' => __('Интернет-банк Промсвязьбанка','yandex_money')),
+		'description' => array(
+			'title' => __('Описание','yandex_money'),
+			'type' => 'textarea',
+			'description' => __('Описание, которое пользователь видит во время оплаты','yandex_money'),
+			'default' => __('Оплата через интернет-банк Промсвязьбанка','yandex_money'))
+		);
+		
     }
  
        public function admin_options(){
-        echo '<h3>'.__('Кошелек Яндекс.Деньги','yandex_money').'</h3>';
+		echo '<h3>'.__('Оплата через интернет-банк Промсвязьбанка','yandex_money').'</h3>';
 		echo '<h5>'.__('Для работы с модулем необходимо <a href="https://money.yandex.ru/joinups/">подключить магазин к Яндек.Кассе</a>. После подключения вы получите параметры для приема платежей (идентификатор магазина — shopId и номер витрины — scid).','yandex_money').'</h5>';
         echo '<table class="form-table">';
         // Generate the HTML For the settings form.
@@ -94,9 +95,8 @@ function woocommerce_YM_payu_init(){
         $order = new WC_Order($order_id);
         $txnid = $order_id;
 		$sendurl=get_option('ym_Demo')=='on'?'https://demomoney.yandex.ru/eshop.xml':'https://money.yandex.ru/eshop.xml';
-	//	update_post_meta(12345,'test_key',$order);
-       $result ='';
-		$result .= '<form name=ShopForm method="POST" id="submit_Yandex_Money_payment_form" action="'.$sendurl.'">';
+	    $result ='';
+		$result .= '<form name=ShopForm method="POST" id="submit_psbank_payment_form" action="'.$sendurl.'">';
 			$result .= '<input type="hidden" name="firstname" value="'.$order -> billing_first_name.'">';
 			$result .= '<input type="hidden" name="lastname" value="'.$order -> billing_last_name.'">';
 			$result .= '<input type="hidden" name="scid" value="'.get_option('ym_Scid').'">';
@@ -107,7 +107,7 @@ function woocommerce_YM_payu_init(){
 			//$result .= '<input type=hidden name="CustAddr" value="'.$order->billing_city.', '.$order->billing_address_1.'" size="43">';
 			//$result .= '<input type=hidden name="CustEMail" value="'.$order->billing_email.'" size="43">'; 
 			//$result .= '<textarea style="display:none" rows="10" name="OrderDetails"  cols="34">'.$order->customer_note.'</textarea>';
-			$result .= '<input name="paymentType" value="PC" type="hidden">';
+			$result .= '<input name="paymentType" value="PB" type="hidden">';
 			$result .= '<input type=submit value="Оплатить">';
 		$result .='<script type="text/javascript">';
 		$result .='jQuery(function(){
@@ -131,7 +131,7 @@ function woocommerce_YM_payu_init(){
 		});
 		});
 		';
-		$result .='jQuery(document).ready(function ($){ jQuery("#submit_Yandex_Money_payment_form").submit(); });';
+		$result .='jQuery(document).ready(function ($){ jQuery("#submit_psbank_payment_form").submit(); });';
 		$result .='</script>';
 		$result .='</form>';
 		
@@ -180,44 +180,14 @@ function woocommerce_YM_payu_init(){
    /**
      * Add the Gateway to WooCommerce
      **/
-    function woocommerce_add_YM_payu_gateway($methods) {
-        $methods[] = 'WC_YM_Payu';
+    function woocommerce_add_psbank_payu_gateway($methods) {
+        $methods[] = 'WC_psbank_Payu';
         return $methods;
     }
  
-    add_filter('woocommerce_payment_gateways', 'woocommerce_add_YM_payu_gateway' );
+    add_filter('woocommerce_payment_gateways', 'woocommerce_add_psbank_payu_gateway' );
 }
 
-
-add_action('woocommerce_api_wc_test', 'check_test');
-function check_test(){
-		global $woocommerce;
-
-		echo '234234234';
-		if (isset($_GET['ym']) AND $_GET['ym'] == 'result'){
-			
-			echo '<pre>';
-			print_r($_POST);
-			echo '</pre>';
-		}/*
-		else if (isset($_GET['yandex_money']) AND $_GET['yandex_money'] == 'success'){
-			$inv_id = $_POST['InvId'];
-			$order = new WC_Order($inv_id);
-			$order->update_status('processing', __('Платеж успешно оплачен', 'woocommerce'));
-			WC()->cart->empty_cart();
-
-			wp_redirect( $this->get_return_url( $order ) );
-		}
-		else if (isset($_GET['yandex_money']) AND $_GET['yandex_money'] == 'fail'){
-			$inv_id = $_POST['InvId'];
-			$order = new WC_Order($inv_id);
-			$order->update_status('failed', __('Платеж не оплачен', 'woocommerce'));
-
-			wp_redirect($order->get_cancel_order_url());
-			exit;
-		}*/
-
-	}
 
 
 

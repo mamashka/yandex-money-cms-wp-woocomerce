@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: yandexmoney_wp_woocommerce
- * Plugin URI: https://github.com/yandex-money/yandex-money-cms-wp-woocomerce
+ * Plugin URI: https://github.com/aTastyCookie/yandexmoney_wp_woocommerce
  * Description: Yandex.Kassa
  */
 
@@ -10,7 +10,11 @@ include_once 'yandex/yandex.php';
 include_once 'bank/bank.php';
 include_once 'terminal/terminal.php';
 include_once 'webmoney/webmoney.php';
-
+include_once 'alfabank/alfabank.php';
+include_once 'masterpass/masterpass.php';
+include_once 'mobile/mobile.php';
+include_once 'psbank/psbank.php';
+include_once 'sberbank/sberbank.php';
 /*
 add_filter( 'woocommerce_general_settings', 'add_order_ym_shopPassword' );
 function add_order_ym_shopPassword( $settings ) {

@@ -2,7 +2,7 @@
 	function terminal_gateway_icon( $gateways ) {
 		if ( isset( $gateways['terminal'] ) ) {
 			$url=WP_PLUGIN_URL."/".dirname( plugin_basename( __FILE__ ) );
-			$gateways['terminal']->icon = $url . '/rub.png';
+			$gateways['terminal']->icon = $url . '/gp.png';
 		}
 	 
 		return $gateways;
@@ -17,7 +17,7 @@ function woocommerce_terminal_payu_init(){
   class WC_terminal_Payu extends WC_Payment_Gateway{
     public function __construct(){
       $this -> id = 'terminal';
-      $this -> method_title = 'Оплата наличными (через Яндекс.Деньги)';
+      $this -> method_title = 'Наличными через кассы и терминалы';
       $this -> has_fields = false;
  
       $this -> init_form_fields();
@@ -46,25 +46,25 @@ function woocommerce_terminal_payu_init(){
 		'enabled' => array(
 			'title' => __('Включить/Выключить','yandex_money'),
 			'type' => 'checkbox',
-			'label' => __('Включить модуль оплаты наличными (через Яндекс.Деньги)','yandex_money'),
+			'label' => __('Включить оплату наличными через кассы и терминалы','yandex_money'),
 			'default' => 'no'),
 		'title' => array(
 			'title' => __('Заголовок','yandex_money'),
 			'type'=> 'text',
 			'description' => __('Название, которое пользователь видит во время оплаты','yandex_money'),
-			'default' => __('Оплата наличными','yandex_money')),
+			'default' => __('Наличными через кассы и терминалы','yandex_money')),
 		'description' => array(
 			'title' => __('Описание','yandex_money'),
 			'type' => 'textarea',
 			'description' => __('Описание, которое пользователь видит во время оплаты','yandex_money'),
-			'default' => __('Оплата наличными через платежные терминалы','yandex_money'))
+			'default' => __('Оплата наличными через кассы и терминалы','yandex_money'))
 		);
 		
     }
  
        public function admin_options(){
-		echo '<h3>'.__('Оплата наличными (через Яндекс.Деньги)','yandex_money').'</h3>';
-		echo '<h5>'.__('Для подключения модуля оплаты наличными (через Яндекс.Деньги) нужно одобрить заявку на подключение https://money.yandex.ru/joinups/ , после этого Вы получите и ShopID, и Scid','yandex_money').'</h5>';
+		echo '<h3>'.__('Оплата наличными через кассы и терминалы','yandex_money').'</h3>';
+		echo '<h5>'.__('Для работы с модулем необходимо <a href="https://money.yandex.ru/joinups/">подключить магазин к Яндек.Кассе</a>. После подключения вы получите параметры для приема платежей (идентификатор магазина — shopId и номер витрины — scid).','yandex_money').'</h5>';
         echo '<table class="form-table">';
         // Generate the HTML For the settings form.
         $this -> generate_settings_html();
@@ -103,10 +103,10 @@ function woocommerce_terminal_payu_init(){
 			$result .= '<input type="hidden" name="ShopID" value="'.get_option('ym_ShopID').'"> ';
 			$result .= '<input type=hidden name="CustomerNumber" value="'.$txnid.'" size="43">';
 			$result .= '<input type=hidden name="Sum" value="'.number_format( $order->order_total, 2, '.', '' ).'" size="43">'; 
-			$result .= '<input type=hidden name="CustName" value="'.$order->billing_first_name.' '.$order->billing_last_name.'" size="43">';
-			$result .= '<input type=hidden name="CustAddr" value="'.$order->billing_city.', '.$order->billing_address_1.'" size="43">';
-			$result .= '<input type=hidden name="CustEMail" value="'.$order->billing_email.'" size="43">'; 
-			$result .= '<textarea style="display:none" rows="10" name="OrderDetails"  cols="34">'.$order->customer_note.'</textarea>';
+			//$result .= '<input type=hidden name="CustName" value="'.$order->billing_first_name.' '.$order->billing_last_name.'" size="43">';
+			//$result .= '<input type=hidden name="CustAddr" value="'.$order->billing_city.', '.$order->billing_address_1.'" size="43">';
+			//$result .= '<input type=hidden name="CustEMail" value="'.$order->billing_email.'" size="43">'; 
+			//$result .= '<textarea style="display:none" rows="10" name="OrderDetails"  cols="34">'.$order->customer_note.'</textarea>';
 			$result .= '<input name="paymentType" value="GP" type="hidden">';
 			$result .= '<input type=submit value="Оплатить">';
 		$result .='<script type="text/javascript">';

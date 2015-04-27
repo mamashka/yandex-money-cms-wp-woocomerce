@@ -1,23 +1,23 @@
-<?php	
-	function yandex_alfabank_gateway_icon( $gateways ) {
-		if ( isset( $gateways['yandex_alfabank'] ) ) {
+<?php
+	function alfabank_gateway_icon( $gateways ) {
+		if ( isset( $gateways['alfabank'] ) ) {
 			$url=WP_PLUGIN_URL."/".dirname( plugin_basename( __FILE__ ) );
-			$gateways['yandex_alfabank']->icon = $url . '/alfabank.png';
+			$gateways['alfabank']->icon = $url . '/ab.png';
 		}
 	 
 		return $gateways;
 	}
 	 
-	add_filter( 'woocommerce_available_payment_gateways', 'yandex_alfabank_gateway_icon' );
+	add_filter( 'woocommerce_available_payment_gateways', 'alfabank_gateway_icon' );
 
-add_action('plugins_loaded', 'woocommerce_yandex_alfabank_payu_init', 0);
-function woocommerce_yandex_alfabank_payu_init(){
+add_action('plugins_loaded', 'woocommerce_alfabank_payu_init', 0);
+function woocommerce_alfabank_payu_init(){
   if(!class_exists('WC_Payment_Gateway')) return;
  
-  class WC_yandex_alfabank_Payu extends WC_Payment_Gateway{
+  class WC_alfabank_Payu extends WC_Payment_Gateway{
     public function __construct(){
-      $this -> id = 'yandex_alfabank';
-      $this -> method_title = 'АльфаБанк (через Яндекс.Деньги)';
+      $this -> id = 'alfabank';
+      $this -> method_title = 'Альфа-клик';
       $this -> has_fields = false;
  
       $this -> init_form_fields();
@@ -38,40 +38,33 @@ function woocommerce_yandex_alfabank_payu_init(){
              } else {
                 add_action( 'woocommerce_update_options_payment_gateways', array( &$this, 'process_admin_options' ) );
             }
-      add_action('woocommerce_receipt_yandex_alfabank', array(&$this, 'receipt_page'));
+      add_action('woocommerce_receipt_alfabank', array(&$this, 'receipt_page'));
    }
     function init_form_fields(){
-	
-	 $this -> form_fields = array(
+ 
+   	 $this -> form_fields = array(
 		'enabled' => array(
 			'title' => __('Включить/Выключить','yandex_money'),
 			'type' => 'checkbox',
-			'label' => __('Включить модуль оплаты АльфаБанк (через Яндекс.Деньги)','yandex_money'),
+			'label' => __('Включить оплату через Альфа-клик','yandex_money'),
 			'default' => 'no'),
 		'title' => array(
 			'title' => __('Заголовок','yandex_money'),
 			'type'=> 'text',
 			'description' => __('Название, которое пользователь видит во время оплаты','yandex_money'),
-			'default' => __('АльфаБанк','yandex_money')),
+			'default' => __('Альфа-клик','yandex_money')),
 		'description' => array(
 			'title' => __('Описание','yandex_money'),
 			'type' => 'textarea',
 			'description' => __('Описание, которое пользователь видит во время оплаты','yandex_money'),
-			'default' => __('Оплата через систему АльфаБанк','yandex_money')),
-		'scid' => array(
-			'title' => 'Scid',
-			'type' => 'text',
-			'description' => __('Номер витрины магазина ЦПП','yandex_money')),
-		'ShopID' => array(
-			'title' => 'ShopID',
-			'type' => 'text',
-			'description' => __('Номер магазина ЦПП','yandex_money') )
+			'default' => __('Оплата через Альфа-клик','yandex_money'))
 		);
+		
     }
  
        public function admin_options(){
-         echo '<h3>'.__('Оплата АльфаБанк (через Яндекс.Деньги)','yandex_money').'</h3>';
-		echo '<h5>'.__('Для подключения модуля оплаты АльфаБанк (через Яндекс.Деньги) нужно одобрить заявку на подключение https://money.yandex.ru/joinups/ , после этого Вы получите и ShopID, и Scid','yandex_money').'</h5>';
+		echo '<h3>'.__('Оплата Альфа-клик','yandex_money').'</h3>';
+		echo '<h5>'.__('Для работы с модулем необходимо <a href="https://money.yandex.ru/joinups/">подключить магазин к Яндек.Кассе</a>. После подключения вы получите параметры для приема платежей (идентификатор магазина — shopId и номер витрины — scid).','yandex_money').'</h5>';
         echo '<table class="form-table">';
         // Generate the HTML For the settings form.
         $this -> generate_settings_html();
@@ -101,15 +94,19 @@ function woocommerce_yandex_alfabank_payu_init(){
  
         $order = new WC_Order($order_id);
         $txnid = $order_id;
+		$sendurl=get_option('ym_Demo')=='on'?'https://demomoney.yandex.ru/eshop.xml':'https://money.yandex.ru/eshop.xml';
 	    $result ='';
-		$result .= '<form name=ShopForm method="POST" id="submit_alfabank_payment_form" action="https://money.yandex.ru/eshop.xml">';
+		$result .= '<form name=ShopForm method="POST" id="submit_alfabank_payment_form" action="'.$sendurl.'">';
 			$result .= '<input type="hidden" name="firstname" value="'.$order -> billing_first_name.'">';
 			$result .= '<input type="hidden" name="lastname" value="'.$order -> billing_last_name.'">';
-			$result .= '<input type="hidden" name="scid" value="'.$this->scid.'">';
-			$result .= '<input type="hidden" name="ShopID" value="'.$this->ShopID.'"> ';
+			$result .= '<input type="hidden" name="scid" value="'.get_option('ym_Scid').'">';
+			$result .= '<input type="hidden" name="ShopID" value="'.get_option('ym_ShopID').'"> ';
 			$result .= '<input type=hidden name="CustomerNumber" value="'.$txnid.'" size="43">';
 			$result .= '<input type=hidden name="Sum" value="'.number_format( $order->order_total, 2, '.', '' ).'" size="43">'; 
-			$result .= '<textarea style="display:none" rows="10" name="OrderDetails"  cols="34">'.$order->customer_note.'</textarea>';
+			//$result .= '<input type=hidden name="CustName" value="'.$order->billing_first_name.' '.$order->billing_last_name.'" size="43">';
+			//$result .= '<input type=hidden name="CustAddr" value="'.$order->billing_city.', '.$order->billing_address_1.'" size="43">';
+			//$result .= '<input type=hidden name="CustEMail" value="'.$order->billing_email.'" size="43">'; 
+			//$result .= '<textarea style="display:none" rows="10" name="OrderDetails"  cols="34">'.$order->customer_note.'</textarea>';
 			$result .= '<input name="paymentType" value="AB" type="hidden">';
 			$result .= '<input type=submit value="Оплатить">';
 		$result .='<script type="text/javascript">';
@@ -183,12 +180,12 @@ function woocommerce_yandex_alfabank_payu_init(){
    /**
      * Add the Gateway to WooCommerce
      **/
-    function woocommerce_add_yandex_alfabank_payu_gateway($methods) {
-        $methods[] = 'WC_yandex_alfabank_Payu';
+    function woocommerce_add_alfabank_payu_gateway($methods) {
+        $methods[] = 'WC_alfabank_Payu';
         return $methods;
     }
  
-    add_filter('woocommerce_payment_gateways', 'woocommerce_add_yandex_alfabank_payu_gateway' );
+    add_filter('woocommerce_payment_gateways', 'woocommerce_add_alfabank_payu_gateway' );
 }
 
 
