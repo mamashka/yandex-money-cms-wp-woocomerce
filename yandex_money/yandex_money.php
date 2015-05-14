@@ -1,9 +1,11 @@
 <?php
-
 /**
- * Plugin Name: yandexmoney_wp_woocommerce
- * Plugin URI: https://github.com/aTastyCookie/yandexmoney_wp_woocommerce
- * Description: Yandex.Kassa
+	Plugin Name: yandexmoney_wp_woocommerce
+	Plugin URI: https://github.com/yandex-money/yandexmoney_wp_woocommerce
+	Description: Online shop with Yandex.Money support.
+	Version: 1.0.0
+	Author: Yandex.Money
+	Author URI: http://money.yandex.ru
  */
 
 include_once 'yandex/yandex.php';
